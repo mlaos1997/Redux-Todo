@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import '../App.css';
 
 import { addTodo, toggleComplete } from '../actions';
 
@@ -14,7 +15,9 @@ class TodoList extends React.Component {
 
     handleTodoClick = e => {
         e.preventDefault();
-        this.props.addTodo(this.state.newTodo);
+        if(this.state.newTodo.length > 0) {
+            this.props.addTodo(this.state.newTodo);
+        } else return;
         // clear input field
         this.setState({ newTodo: '' });
     };
@@ -27,11 +30,13 @@ class TodoList extends React.Component {
     render() {
         return ( 
             <div className="App">
+            <h1>Todo List</h1>
                 <div className="todo-list">
                     {this.props.todos.map((todo, index) => 
-                        <h4 key={index} onClick={e => this.toggleComplete(e, index)}>{todo.value}{todo.completed && <p>Complete</p>}</h4>
+                        <h4 key={index} onClick={e => this.toggleComplete(e, index)}>{todo.value}{' '}{todo.completed && <i class="fas fa-check" />}</h4>
                         )}
                 </div>
+                <div className="form">                
                 <input 
                 type="text"
                 value={this.state.newTodo}
@@ -39,6 +44,7 @@ class TodoList extends React.Component {
                 placeholder="Add new todo"
                 />
                 <button onClick={this.handleTodoClick}>Add Todo</button>
+                </div>
             </div>
         );
     };
